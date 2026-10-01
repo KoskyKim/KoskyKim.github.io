@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>George Kimani | Backend and Full-Stack Developer</title>
+<meta name="description" content="Portfolio of George Kimani, a recent B.Sc. Information Technology graduate building REST APIs with Node.js and Express.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F5F6F2;
+  --surface: #FFFFFF;
+  --ink: #1B2230;
+  --muted: #566074;
+  --line: #D9DDD3;
+  --accent: #2B4BDB;
+  --accent-soft: #E4E9FB;
+  --on-accent: #FFFFFF;
+  --panel: #131B2B;
+  --panel-line: #2A3550;
+  --panel-ink: #D6DCEB;
+  --panel-key: #8FA8FF;
+  --panel-str: #9BE0B8;
+  --panel-dim: #7D88A3;
+  --ok: #7BE0A5;
+
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0F141D;
+    --surface: #161D29;
+    --ink: #E8ECF4;
+    --muted: #9AA5BA;
+    --line: #28313F;
+    --accent: #8FA8FF;
+    --accent-soft: #1E2744;
+    --on-accent: #0F141D;
+    --panel: #1A2438;
+    --panel-line: #33405E;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0F141D;
+  --surface: #161D29;
+  --ink: #E8ECF4;
+  --muted: #9AA5BA;
+  --line: #28313F;
+  --accent: #8FA8FF;
+  --accent-soft: #1E2744;
+  --on-accent: #0F141D;
+  --panel: #1A2438;
+  --panel-line: #33405E;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* top bar */
+.bar { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; align-items: center; padding: 22px 0; }
+.bar .id { font-family: var(--display); font-weight: 700; font-size: 1.05rem; color: var(--ink); text-decoration: none; }
+.bar nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.bar nav a { font-family: var(--display); font-weight: 500; font-size: .98rem; color: var(--muted); text-decoration: none; }
+.bar nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; padding: 56px 0 88px; }
+.hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.7rem, 7.2vw, 4.7rem); line-height: .98; letter-spacing: -0.025em; margin: 0 0 22px; }
+.hero .lede { font-size: 1.22rem; line-height: 1.55; max-width: 34ch; margin: 0 0 30px; }
+.hero .meta { color: var(--muted); font-size: .98rem; margin: 0 0 30px; max-width: 44ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { font-family: var(--display); font-weight: 700; font-size: 1rem; padding: 13px 22px; border-radius: 10px; text-decoration: none; border: 2px solid var(--accent); display: inline-block; }
+.btn.primary { background: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn.ghost:hover { background: var(--accent-soft); }
+
+/* api panel: the one memorable element */
+.panel { background: var(--panel); border: 1px solid var(--panel-line); border-radius: 14px; color: var(--panel-ink); overflow: hidden; box-shadow: 0 24px 48px -28px rgba(10, 20, 50, .55); }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 10px 10px 0; border-bottom: 1px solid var(--panel-line); }
+.tab { font-family: var(--mono); font-size: .82rem; color: var(--panel-dim); background: transparent; border: 0; padding: 9px 12px 11px; border-radius: 8px 8px 0 0; cursor: pointer; border-bottom: 2px solid transparent; }
+.tab:hover { color: var(--panel-ink); }
+.tab[aria-selected="true"] { color: #fff; border-bottom-color: var(--panel-key); }
+.reqline { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 18px 0; font-family: var(--mono); font-size: .82rem; color: var(--panel-dim); }
+.reqline .status { color: var(--ok); }
+.panel pre { margin: 0; padding: 12px 18px 22px; font-family: var(--mono); font-size: .83rem; line-height: 1.7; min-height: 21.5rem; overflow-x: auto; white-space: pre; }
+.panel pre .l { display: block; }
+.panel pre.intro .l { opacity: 0; animation: line-in .35s ease forwards; animation-delay: calc(var(--i) * 70ms + 200ms); }
+.k { color: var(--panel-key); }
+.s { color: var(--panel-str); }
+@keyframes line-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* sections */
+section { padding: 72px 0; border-top: 1px solid var(--line); }
+section > .wrap > h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.7rem, 3.4vw, 2.2rem); letter-spacing: -0.015em; line-height: 1.15; margin: 0 0 12px; }
+.intro-p { color: var(--muted); max-width: 58ch; margin: 0 0 40px; }
+.row { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 12px 48px; padding: 30px 0; border-top: 1px solid var(--line); }
+.rows > .row:first-child { border-top: 0; padding-top: 6px; }
+.row h3 { font-family: var(--display); font-weight: 700; font-size: 1.22rem; line-height: 1.25; margin: 0 0 6px; }
+.row .when { color: var(--muted); font-size: .96rem; margin: 0; }
+.row .body { max-width: 64ch; }
+.row .body p { margin: 0 0 12px; }
+.row .body ul { margin: 0 0 12px; padding-left: 1.15em; }
+.row .body li { margin-bottom: 6px; }
+.row .stack { color: var(--muted); font-size: .98rem; margin: 0; }
+.row .stack strong { font-family: var(--display); font-weight: 700; color: var(--ink); }
+.visit { font-family: var(--display); font-weight: 500; }
+
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px 40px; }
+.skills h3 { font-family: var(--display); font-weight: 700; font-size: 1.05rem; margin: 0 0 8px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); display: inline-block; }
+.skills p { margin: 0; max-width: 34ch; }
+
+.next { background: var(--accent-soft); border-radius: 14px; padding: 26px 28px; max-width: 760px; }
+.next h3 { font-family: var(--display); font-weight: 700; font-size: 1.15rem; margin: 0 0 8px; }
+.next p { margin: 0; }
+
+.contact h2 { font-size: clamp(2rem, 5vw, 3rem); }
+.mail { font-family: var(--display); font-weight: 700; font-size: clamp(1.25rem, 3.6vw, 1.9rem); color: var(--accent); word-break: break-word; }
+.contact .links { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 18px; font-family: var(--display); font-weight: 500; }
+footer { padding: 32px 0 48px; color: var(--muted); font-size: .92rem; border-top: 1px solid var(--line); }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding: 28px 0 64px; }
+  .row { grid-template-columns: 1fr; gap: 10px; }
+  section { padding: 56px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .panel pre.intro .l { opacity: 1; animation: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="wrap bar">
+  <a class="id" href="#top">George Kimani</a>
+  <nav aria-label="Sections">
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <h1>George Kimani</h1>
+      <p class="lede">Recent IT graduate who builds REST APIs with Node.js and Express, and is ready to grow as a software engineer.</p>
+      <p class="meta">B.Sc. Information Technology, Second Class Upper Honours (Dec 2025). Based in Mombasa, Kenya. Applying for the Software Engineering Graduate Trainee role at Cellulant.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:cuthgeorge22@gmail.com">Email me</a>
+        <a class="btn ghost" href="#projects">See my projects</a>
+      </div>
+    </div>
+
+    <div class="panel" role="region" aria-label="Interactive profile in the form of an API response">
+      <div class="tabs" role="tablist" aria-label="Choose an endpoint">
+        <button class="tab" role="tab" id="t-about" aria-selected="true" aria-controls="out" data-ep="about">/about</button>
+        <button class="tab" role="tab" id="t-skills" aria-selected="false" aria-controls="out" data-ep="skills" tabindex="-1">/skills</button>
+        <button class="tab" role="tab" id="t-projects" aria-selected="false" aria-controls="out" data-ep="projects" tabindex="-1">/projects</button>
+        <button class="tab" role="tab" id="t-contact" aria-selected="false" aria-controls="out" data-ep="contact" tabindex="-1">/contact</button>
+      </div>
+      <div class="reqline"><span id="req">GET /about</span><span class="status">200 OK</span></div>
+      <pre id="out" role="tabpanel" aria-labelledby="t-about" tabindex="0">{
+  "name": "George Kimani",
+  "role": "Graduate Trainee applicant, Software Engineering (Backend)",
+  "degree": "B.Sc. Information Technology, Second Class Upper Honours",
+  "graduated": "Dec 2025",
+  "location": "Mombasa, Kenya"
+}</pre>
+    </div>
+  </div>
+
+  <section id="projects">
+    <div class="wrap">
+      <h2>Projects</h2>
+      <p class="intro-p">Three live or delivered builds, from a custom backend platform to client websites.</p>
+      <div class="rows">
+
+        <article class="row">
+          <div>
+            <h3>Manuscript submission and publishing platform</h3>
+            <p class="when">Jan 2026 to Apr 2026<br>Independent project</p>
+          </div>
+          <div class="body">
+            <p>I built this platform end to end, covering the backend services and the separate workflows authors and editors use to submit and review manuscripts.</p>
+            <ul>
+              <li>Implemented secure authentication and DRM-enabled eBook distribution to protect content and user data.</li>
+              <li>Monitored performance, security and user analytics to decide what to improve next.</li>
+              <li>Shipped iterative updates and fixes based on direct author feedback.</li>
+            </ul>
+            <p class="stack"><strong>Built with:</strong> Node.js, Express, RESTful APIs, secure authentication, DRM</p>
+          </div>
+        </article>
+
+        <article class="row">
+          <div>
+            <h3>Tediotours tourism website</h3>
+            <p class="when">Sep 2025 to Dec 2025<br>WordPress developer</p>
+          </div>
+          <div class="body">
+            <p>I took this tourism site from theme customisation to launch, with booking built in so visitors can reserve directly.</p>
+            <ul>
+              <li>Integrated booking functionality for direct customer reservations.</li>
+              <li>Tracked visitor engagement and made improvements based on traveller feedback.</li>
+            </ul>
+            <p class="stack"><strong>Built with:</strong> WordPress, custom theme work, plugin integration</p>
+            <p class="stack"><a class="visit" href="https://tediotours.com" target="_blank" rel="noopener">Visit tediotours.com</a></p>
+          </div>
+        </article>
+
+        <article class="row">
+          <div>
+            <h3>Regia Consulting website</h3>
+            <p class="when">Jun 2024 to Dec 2024<br>Web developer and site administrator</p>
+          </div>
+          <div class="body">
+            <p>I designed and developed the company website from scratch so its structure and content match the business goals, then looked after it afterwards.</p>
+            <ul>
+              <li>Monitored uptime and analytics to keep the site performing.</li>
+              <li>Adapted features in response to user feedback and provided ongoing technical support.</li>
+            </ul>
+            <p class="stack"><a class="visit" href="https://regiaconsult.com" target="_blank" rel="noopener">Visit regiaconsult.com</a></p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <h2>Skills</h2>
+      <p class="intro-p">What I work with today.</p>
+      <div class="skills">
+        <div>
+          <h3>Backend</h3>
+          <p>Node.js, Express.js, RESTful APIs, API integration, secure authentication</p>
+        </div>
+        <div>
+          <h3>Databases</h3>
+          <p>MySQL, MongoDB</p>
+        </div>
+        <div>
+          <h3>Frontend</h3>
+          <p>HTML, CSS, JavaScript, responsive web design</p>
+        </div>
+        <div>
+          <h3>Web platforms</h3>
+          <p>WordPress (custom themes, plugin integration), custom-coded websites</p>
+        </div>
+        <div>
+          <h3>Networking and security</h3>
+          <p>Cisco CCNA (routing and switching), network administration, data protection, DRM and content security</p>
+        </div>
+        <div>
+          <h3>Working style</h3>
+          <p>Clear communication, collaboration, problem solving, time management, leadership</p>
+        </div>
+      </div>
+
+      <div class="next" style="margin-top: 48px;">
+        <h3>What I'm building toward</h3>
+        <p>Java and Spring Boot for backend services, plus automated testing for the APIs I write.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <h2>Experience, education and certifications</h2>
+      <p class="intro-p">Where the foundations came from.</p>
+      <div class="rows">
+
+        <article class="row">
+          <div>
+            <h3>IT Support Intern</h3>
+            <p class="when">May 2024 to Aug 2024<br>St. Mary's Mission Hospital, Lang'ata</p>
+          </div>
+          <div class="body">
+            <ul>
+              <li>Resolved hardware and software issues for end users with fast turnaround.</li>
+              <li>Helped maintain network infrastructure and roll out system updates with the IT team.</li>
+              <li>Applied cybersecurity measures to strengthen data protection and reduce risk.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="row">
+          <div>
+            <h3>B.Sc. Information Technology</h3>
+            <p class="when">Aug 2021 to Dec 2025</p>
+          </div>
+          <div class="body">
+            <p>Graduated with Second Class Upper Honours.</p>
+          </div>
+        </article>
+
+        <article class="row">
+          <div>
+            <h3>Cisco Networking Academy</h3>
+            <p class="when">2023</p>
+          </div>
+          <div class="body">
+            <ul>
+              <li>CCNA 2: Switching, Routing, and Wireless Essentials, certified with Merit (Sep to Dec 2023).</li>
+              <li>CCNAv7: Introduction to Networks, certified (Jan to May 2023).</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="row">
+          <div>
+            <h3>Leadership and community</h3>
+            <p class="when">2022 to 2025</p>
+          </div>
+          <div class="body">
+            <ul>
+              <li>Administrator, Ascent Leadership Training Experience (Oct to Dec 2025, certified).</li>
+              <li>Coordinator, The Journey TUM (Aug 2022 to Dec 2024).</li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2>Let's talk</h2>
+      <p class="intro-p">I'm available to start as a graduate trainee and happy to walk you through any of the projects above.</p>
+      <a class="mail" href="mailto:cuthgeorge22@gmail.com">cuthgeorge22@gmail.com</a>
+      <div class="links">
+        <a href="https://www.linkedin.com/in/cuthbertmburu" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">George Cuthbert Mburu Kimani, Mombasa, Kenya.</div>
+</footer>
+
+<script>
+(function () {
+  var data = {
+    about: {
+      name: "George Kimani",
+      role: "Graduate Trainee applicant, Software Engineering (Backend)",
+      degree: "B.Sc. Information Technology, Second Class Upper Honours",
+      graduated: "Dec 2025",
+      location: "Mombasa, Kenya"
+    },
+    skills: {
+      backend: ["Node.js", "Express.js", "RESTful APIs", "Secure authentication"],
+      databases: ["MySQL", "MongoDB"],
+      frontend: ["HTML", "CSS", "JavaScript"],
+      networking: ["Cisco CCNA"]
+    },
+    projects: [
+      { name: "Manuscript submission and publishing platform", year: "2026", stack: "Node.js, Express, REST" },
+      { name: "Tediotours tourism website", year: "2025", stack: "WordPress" },
+      { name: "Regia Consulting website", year: "2024", stack: "Web development" }
+    ],
+    contact: {
+      email: "cuthgeorge22@gmail.com",
+      linkedin: "linkedin.com/in/cuthbertmburu",
+      location: "Mombasa, Kenya"
+    }
+  };
+
+  var out = document.getElementById("out");
+  var req = document.getElementById("req");
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  function paint(line) {
+    var h = esc(line);
+    h = h.replace(/^(\s*)("[^"]+")(:)/, '$1<span class="k">$2</span>$3');
+    h = h.replace(/(: )("(?:[^"\\]|\\.)*")(,?)$/, '$1<span class="s">$2</span>$3');
+    h = h.replace(/^(\s+)("(?:[^"\\]|\\.)*")(,?)$/, '$1<span class="s">$2</span>$3');
+    return h;
+  }
+
+  function render(ep, animate) {
+    var lines = JSON.stringify(data[ep], null, 2).split("\n");
+    out.className = animate && !reduce ? "intro" : "";
+    out.innerHTML = lines.map(function (l, i) {
+      return '<span class="l" style="--i:' + i + '">' + paint(l) + "</span>";
+    }).join("");
+    req.textContent = "GET /" + ep;
+  }
+
+  function select(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.setAttribute("tabindex", on ? "0" : "-1");
+    });
+    out.setAttribute("aria-labelledby", tab.id);
+    render(tab.getAttribute("data-ep"), false);
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { select(t); });
+    t.addEventListener("keydown", function (e) {
+      var n = null;
+      if (e.key === "ArrowRight") n = tabs[(i + 1) % tabs.length];
+      if (e.key === "ArrowLeft") n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (n) { e.preventDefault(); n.focus(); select(n); }
+    });
+  });
+
+  render("about", true);
+})();
+</script>
+</body>
+</html>
